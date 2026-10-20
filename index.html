@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mayar Medhat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Mayar Medhat — Backend Software Engineer building .NET microservices on Azure and governance layers for AI agents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow reading column; section labels sit in a left rail on wide screens, stack above on phones. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #16191f;
+  --muted: #5a6270;
+  --line: #e1e4ea;
+  --accent: #1f56c2;
+  --ok: #1d7a4b;
+  --deny: #b4372f;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1217; --surface: #161a21; --fg: #e8ebf0; --muted: #98a1b0;
+    --line: #262c36; --accent: #7aa5ff; --ok: #5cc98f; --deny: #f08178;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1217; --surface: #161a21; --fg: #e8ebf0; --muted: #98a1b0;
+  --line: #262c36; --accent: #7aa5ff; --ok: #5cc98f; --deny: #f08178;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+.wrap {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Top bar */
+.top { border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1rem; flex-wrap: wrap; }
+.mark { font-family: var(--font-mono); font-size: .85rem; color: var(--fg); text-decoration: none; }
+.top nav { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: .9rem; }
+.top nav a { color: var(--muted); text-decoration: none; }
+.top nav a:hover { color: var(--fg); }
+
+/* Hero */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 3rem; align-items: center; padding-block: 4.5rem 3.5rem; }
+.status { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.status::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: var(--ok); }
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: .75rem 0 1rem;
+  text-wrap: balance;
+}
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 34rem; margin: 0 0 1.75rem; }
+.lede strong { color: var(--fg); font-weight: 500; }
+.links { display: flex; flex-wrap: wrap; gap: .75rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .6rem 1rem; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--fg); text-decoration: none; font-size: .92rem; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+/* Hero detail: a gatekeeper trace, the idea behind her side projects */
+.trace {
+  font-family: var(--font-mono); font-size: .8rem; line-height: 1.75;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1.1rem 1.2rem; overflow-x: auto; min-width: 0;
+}
+.trace .cap { color: var(--muted); display: block; margin-bottom: .4rem; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+.trace .row { display: flex; gap: .75rem; white-space: nowrap; }
+.trace .t { color: var(--muted); }
+.trace .ok { color: var(--ok); }
+.trace .deny { color: var(--deny); }
+.trace .acc { color: var(--accent); }
+
+/* Sections */
+section { border-top: 1px solid var(--line); }
+section > .wrap { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 2rem; padding-block: 3.5rem; }
+.label { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: .3rem; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; line-height: 1.2; margin: 0 0 1rem; text-wrap: balance; letter-spacing: -0.01em; }
+h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.2rem; line-height: 1.3; margin: 0; text-wrap: balance; }
+p { margin: 0 0 1rem; max-width: 40rem; }
+.body > :last-child { margin-bottom: 0; }
+
+/* Experience timeline */
+.jobs { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.5rem; }
+.job { display: grid; gap: .5rem; }
+.job-head { display: flex; justify-content: space-between; gap: .25rem 1rem; flex-wrap: wrap; align-items: baseline; }
+.when { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.role { color: var(--muted); font-size: .95rem; }
+.context { font-size: .95rem; color: var(--muted); margin: 0; }
+.job ul { margin: .25rem 0 0; padding-left: 1.1rem; display: grid; gap: .4rem; max-width: 42rem; }
+.job li::marker { color: var(--accent); }
+.num { font-weight: 600; font-variant-numeric: tabular-nums; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+.tag { font-family: var(--font-mono); font-size: .74rem; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: .1rem .45rem; }
+.minor { display: grid; gap: 1rem; padding-top: 1.5rem; border-top: 1px dashed var(--line); }
+
+/* Projects */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.project {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1.25rem; display: flex; flex-direction: column; gap: .6rem; min-width: 0;
+}
+.project.feature { grid-column: 1 / -1; }
+.project p { margin: 0; font-size: .95rem; color: var(--muted); }
+.project .meta { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); }
+.project .tags { margin-top: auto; padding-top: .5rem; }
+.project-links { display: flex; gap: 1rem; font-size: .9rem; flex-wrap: wrap; }
+.pill { font-family: var(--font-mono); font-size: .7rem; color: var(--ok); border: 1px solid currentColor; border-radius: 999px; padding: .05rem .5rem; margin-left: .4rem; vertical-align: middle; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem 2rem; margin: 0; }
+.skills dt { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: .35rem; }
+.skills dd { margin: 0; }
+
+/* Contact */
+.contact-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.email { font-family: var(--font-mono); font-size: 1rem; user-select: all; padding: .55rem .8rem; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); overflow-wrap: anywhere; }
+.copied { font-size: .85rem; color: var(--ok); min-height: 1.2em; }
+
+footer .wrap { padding-block: 2rem 3rem; font-size: .85rem; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: 3rem 2.5rem; }
+  section > .wrap { grid-template-columns: minmax(0, 1fr); gap: .75rem; padding-block: 2.75rem; }
+  .projects { grid-template-columns: minmax(0, 1fr); }
+  .top nav { gap: 1rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .trace .row { animation: in .5s ease-out both; }
+  .trace .row:nth-of-type(2) { animation-delay: .15s; }
+  .trace .row:nth-of-type(3) { animation-delay: .3s; }
+  .trace .row:nth-of-type(4) { animation-delay: .45s; }
+  .trace .row:nth-of-type(5) { animation-delay: .6s; }
+  @keyframes in { from { opacity: .25; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#">mayar.medhat</a>
+    <nav aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="status">Open to remote &amp; contract roles · Cairo, UTC+3</span>
+        <h1>Mayar Medhat</h1>
+        <p class="lede"><strong>Backend Software Engineer</strong> building .NET microservices on Azure: regulator-facing insurance platforms, enterprise AI automation, and the access controls that keep AI agents in line.</p>
+        <div class="links">
+          <a class="btn primary" href="#contact">Get in touch</a>
+          <a class="btn" href="https://github.com/Mayarmedhat2001" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://linkedin.com/in/mayarmedhat001" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <div class="trace" aria-label="Example audit log from AI Action Gatekeeper">
+        <span class="cap">audit log · ai-action-gatekeeper</span>
+        <div class="row"><span class="t">10:42:07</span><span>support_agent</span><span class="acc">read_report</span><span class="ok">200 allowed</span></div>
+        <div class="row"><span class="t">10:42:09</span><span>support_agent</span><span class="acc">send_email</span><span class="ok">200 allowed</span></div>
+        <div class="row"><span class="t">10:42:12</span><span>support_agent</span><span class="acc">refund_order</span><span class="deny">403 denied</span></div>
+        <div class="row"><span class="t">10:42:15</span><span>finance_agent</span><span class="acc">refund_order</span><span class="ok">200 allowed</span></div>
+        <div class="row"><span class="t">10:42:18</span><span>support_agent</span><span class="acc">drop_tables</span><span class="deny">403 denied</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="label">About</div>
+      <div class="body">
+        <h2>Two-plus years shipping production backends</h2>
+        <p>I design and build .NET microservices on Microsoft Azure. My work has covered two very different worlds: an enterprise platform that runs multi-agent AI workflows for finance, legal, manufacturing and government clients, and a national insurance claims platform that reports to the Central Bank of the UAE.</p>
+        <p>Both taught me the same thing. The interesting problems sit at the boundaries: who is allowed to do what, how a payload moves between services, and how you prove afterwards what happened. My side projects keep pulling on that thread, especially for AI agents that take real actions.</p>
+        <p>I work with distributed, international teams and I'm open to remote or contractor arrangements, including through an EOR.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="label">Experience</div>
+      <div class="body">
+        <ol class="jobs">
+          <li class="job">
+            <div class="job-head">
+              <h3>Mosadad <span class="role">(formerly Motori) · Ras Al Khaimah, UAE</span></h3>
+              <span class="when">Apr 2026 – now · Mar–Sep 2024</span>
+            </div>
+            <p class="context">Backend Software Engineer via Julfar Consultancy Services. Insurance recovery claims platform under CBUAE compliance, running on 6+ microservices.</p>
+            <ul>
+              <li>Built regulator-facing claims analytics APIs: <span class="num">3</span> production endpoints for claim-ageing analysis, SLA breach tracking and detailed reporting, with filtering, sorting and pagination.</li>
+              <li>Designed configurable rule engines for multi-tier claim ageing (up to <span class="num">365+</span> days) and SLA breach detection, serving both insurer and regulator reporting views.</li>
+              <li>Extended shared audit logging across <span class="num">3</span> microservices and shipped backward-compatible Arabic localisation on the regulator dashboard, both as non-breaking cross-service changes.</li>
+              <li>Joined first as a founding backend engineer: the platform processed <span class="num">1,000+</span> claims a month and integrated <span class="num">3+</span> third-party services, cutting manual processing time by <span class="num">30%</span>.</li>
+            </ul>
+            <div class="tags"><span class="tag">.NET Core</span><span class="tag">MongoDB</span><span class="tag">Azure AD / JWT</span><span class="tag">Microservices</span></div>
+          </li>
+
+          <li class="job">
+            <div class="job-head">
+              <h3>ActionAI <span class="role">· Ras Al Khaimah, UAE</span></h3>
+              <span class="when">Sep 2024 – Apr 2026</span>
+            </div>
+            <p class="context">Backend Software Engineer via Julfar Consultancy Services. Enterprise AI automation platform running multi-agent workflows.</p>
+            <ul>
+              <li>Built workflow orchestration microservices with ASP.NET Core, Azure Service Bus and Azure Functions, supporting <span class="num">10+</span> concurrent AI agent pipelines.</li>
+              <li>Developed the agent integration layer that turns JSON contracts into agent schemas and normalises responses, cutting integration time by about <span class="num">40%</span>.</li>
+              <li>Designed platform-wide RBAC with scoped permissions (workspace, project, file) and approval-based access requests, plus matching permission checks in the frontend.</li>
+              <li>Fixed database saturation from large AI payloads by moving them to Azure Blob Storage with a 2-hour cache. Container crashes stopped and database load dropped by about <span class="num">60%</span>.</li>
+            </ul>
+            <div class="tags"><span class="tag">ASP.NET Core</span><span class="tag">Azure Service Bus</span><span class="tag">Azure Functions</span><span class="tag">Blob Storage</span><span class="tag">RBAC</span></div>
+          </li>
+
+          <li class="job minor">
+            <div class="job-head">
+              <h3>Julfar Consultancy Services <span class="role">· Frontend Developer (Trainee)</span></h3>
+              <span class="when">Dec 2023 – Mar 2024</span>
+            </div>
+            <p class="context">Built UI components with React Native, JavaScript and Bootstrap, wired to backend REST APIs.</p>
+            <div class="job-head">
+              <h3>Kites <span class="role">· Software Engineer Intern</span></h3>
+              <span class="when">Jul – Sep 2022</span>
+            </div>
+            <p class="context">Helped with design and implementation tasks and worked in a shared Git workflow.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="label">Side projects</div>
+      <div class="body">
+        <h2>Things I build to think</h2>
+        <div class="projects">
+          <article class="project feature">
+            <span class="meta">TypeScript · Next.js 16 · 2026</span>
+            <h3>warden <span class="pill">live</span></h3>
+            <p>An approval and audit layer for AI agents that take real actions. An LLM agent resolves customer-support tickets, but every tool call is checked against a role and policy engine before it runs. High-risk actions, like replying to a customer or issuing a refund, go to a human approval queue, and every decision lands in an immutable audit log.</p>
+            <div class="project-links">
+              <a href="https://warden-azure.vercel.app" target="_blank" rel="noopener">Live demo</a>
+              <a href="https://github.com/Mayarmedhat2001/warden" target="_blank" rel="noopener">Source</a>
+            </div>
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">React 19</span><span class="tag">Vercel AI SDK + Claude</span><span class="tag">PostgreSQL</span><span class="tag">Drizzle</span><span class="tag">Auth.js</span></div>
+          </article>
+
+          <article class="project">
+            <span class="meta">C# · ASP.NET Core · 2026</span>
+            <h3>AI Action Gatekeeper</h3>
+            <p>A minimal API between an AI agent and its tools. It enforces RBAC before any tool runs and records every attempt. Policy is checked before tool lookup, so a caller can't probe which tools exist through 403 vs 404 responses.</p>
+            <div class="project-links"><a href="https://github.com/Mayarmedhat2001/AiActionGatekeeper" target="_blank" rel="noopener">Source</a></div>
+            <div class="tags"><span class="tag">.NET</span><span class="tag">RBAC</span><span class="tag">Docker</span><span class="tag">Tests</span></div>
+          </article>
+
+          <article class="project">
+            <span class="meta">Python · 2026</span>
+            <h3>Fakturama Image-to-Cash</h3>
+            <p>Turns a photo of an order into a saved, verified order and linked invoice in a desktop invoicing app. Tesseract OCR and layout reconstruction feed a five-stage orchestrator that drives the app through Windows UI Automation, with arithmetic cross-checks that flag bad reads.</p>
+            <div class="project-links"><a href="https://github.com/Mayarmedhat2001/fakturama-image-to-cash" target="_blank" rel="noopener">Source</a></div>
+            <div class="tags"><span class="tag">OCR</span><span class="tag">pywinauto</span><span class="tag">pytest</span></div>
+          </article>
+
+          <article class="project">
+            <span class="meta">C# · RabbitMQ · 2026</span>
+            <h3>RabbitMQ Demo</h3>
+            <p>A producer and consumer pair that demonstrates durable queues, manual acknowledgement and at-least-once delivery, including a walkthrough that shows an unacked message being redelivered after a crash.</p>
+            <div class="project-links"><a href="https://github.com/Mayarmedhat2001/RabbitMqDemo" target="_blank" rel="noopener">Source</a></div>
+            <div class="tags"><span class="tag">.NET</span><span class="tag">RabbitMQ.Client 7</span><span class="tag">Docker</span></div>
+          </article>
+
+          <article class="project">
+            <span class="meta">Python · 2023</span>
+            <h3>Image Search</h3>
+            <p>An image search tool written in Python.</p>
+            <div class="project-links"><a href="https://github.com/Mayarmedhat2001/Imagesearch" target="_blank" rel="noopener">Source</a></div>
+            <div class="tags"><span class="tag">Python</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="label">Skills</div>
+      <div class="body">
+        <dl class="skills">
+          <div><dt>Languages</dt><dd>C#, Python, JavaScript, TypeScript, C++, Java</dd></div>
+          <div><dt>Frameworks</dt><dd>ASP.NET Core, .NET Core, Entity Framework Core, Django, Next.js</dd></div>
+          <div><dt>Cloud &amp; DevOps</dt><dd>Azure Functions, Service Bus, Blob Storage, Event Grid, Azure AD; AWS S3, EC2, Lambda, API Gateway; Docker, CI/CD, Git</dd></div>
+          <div><dt>Data</dt><dd>SQL Server, PostgreSQL, MongoDB</dd></div>
+          <div><dt>Architecture</dt><dd>Microservices, CQRS, event-driven design, REST APIs, Clean Architecture, Repository pattern</dd></div>
+          <div><dt>AI integration</dt><dd>Multi-agent orchestration, LLM request/response handling, tool-call governance</dd></div>
+          <div><dt>Practice</dt><dd>NUnit, unit testing, mocking, code reviews, Agile/Scrum</dd></div>
+          <div><dt>Languages spoken</dt><dd>Arabic (native), English (C1)</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="label">Education</div>
+      <div class="body">
+        <div class="job-head">
+          <h3>BSc Computer Science, Cairo University</h3>
+          <span class="when">2019 – 2023</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="label">Contact</div>
+      <div class="body">
+        <h2>Let's talk</h2>
+        <p>I'm open to backend, platform and AI-integration roles, remote or on contract. Email is the fastest way to reach me.</p>
+        <div class="contact-row">
+          <span class="email" id="email">mayarmedhat001@gmail.com</span>
+          <button class="btn" id="copy" type="button">Copy email</button>
+          <a class="btn" href="mailto:mayarmedhat001@gmail.com">Open mail app</a>
+        </div>
+        <p class="copied" id="copied" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Mayar Medhat</span>
+    <span><a href="https://github.com/Mayarmedhat2001" target="_blank" rel="noopener">GitHub</a> · <a href="https://linkedin.com/in/mayarmedhat001" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("copy").addEventListener("click", function () {
+    var text = document.getElementById("email").textContent;
+    var out = document.getElementById("copied");
+    function fallback() {
+      var r = document.createRange();
+      r.selectNodeContents(document.getElementById("email"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      out.textContent = "Selected. Press Ctrl+C or Cmd+C to copy.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { out.textContent = "Copied."; }, fallback);
+    } else { fallback(); }
+  });
+</script>
+</body>
+</html>
