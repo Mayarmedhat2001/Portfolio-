@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f56c2'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' font-weight='700' fill='white' text-anchor='middle'%3EMM%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Mayar Medhat Ali","jobTitle":"Full-Stack .NET Engineer","email":"mailto:mayarmedhat001@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Cairo","addressCountry":"EG"},"alumniOf":"Cairo University","sameAs":["https://github.com/Mayarmedhat2001","https://linkedin.com/in/mayarmedhat001"],"knowsAbout":["ASP.NET Core","C#","React","Next.js","Microsoft Azure","Microservices","RBAC","AI agent integration"]}
+{"@context":"https://schema.org","@type":"Person","name":"Mayar Medhat Ali","jobTitle":"Full-Stack .NET Engineer","email":"mailto:mayarmedhat001@gmail.com","telephone":"+201126217669","address":{"@type":"PostalAddress","addressLocality":"Cairo","addressCountry":"EG"},"alumniOf":"Cairo University","sameAs":["https://github.com/Mayarmedhat2001","https://linkedin.com/in/mayarmedhat001"],"knowsAbout":["ASP.NET Core","C#","React","Next.js","Microsoft Azure","Microservices","RBAC","AI agent integration"]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,6 +207,7 @@ p { margin: 0 0 1rem; max-width: 42rem; }
 /* Contact */
 .contact { background: var(--tint); border-top: 0; }
 .contact-row { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; margin-top: .5rem; }
+a.email { color: var(--fg); text-decoration: none; }
 .email { font-family: var(--font-mono); font-size: 1rem; user-select: all; padding: .58rem .85rem; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); overflow-wrap: anywhere; }
 .copied { font-size: .85rem; color: var(--ok); min-height: 1.3em; margin: .6rem 0 0; }
 
@@ -469,11 +470,16 @@ footer .wrap { padding-block: 1.75rem 3rem; font-size: .85rem; color: var(--mute
       <div class="label">Contact</div>
       <div class="body">
         <h2>Hiring for a full-stack or .NET role?</h2>
-        <p>I'm open to remote positions and contract work, including through an employer of record. I'm based in Cairo (UTC+3) and used to working with distributed teams in the UAE. Email is the fastest way to reach me.</p>
+        <p>I'm open to remote positions and contract work, including through an employer of record. I'm based in Cairo (UTC+3) and used to working with distributed teams in the UAE. Email or WhatsApp is the fastest way to reach me.</p>
         <div class="contact-row">
           <span class="email" id="email">mayarmedhat001@gmail.com</span>
-          <button class="btn primary" id="copy" type="button">Copy email</button>
-          <a class="btn" href="https://linkedin.com/in/mayarmedhat001" target="_blank" rel="noopener">Message on LinkedIn</a>
+          <button class="btn primary" type="button" data-copy="email">Copy email</button>
+        </div>
+        <div class="contact-row">
+          <a class="email" id="phone" href="tel:+201126217669">+20 11 2621 7669</a>
+          <button class="btn" type="button" data-copy="phone">Copy number</button>
+          <a class="btn" href="https://wa.me/201126217669" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn" href="https://linkedin.com/in/mayarmedhat001" target="_blank" rel="noopener">LinkedIn</a>
         </div>
         <p class="copied" id="copied" aria-live="polite"></p>
       </div>
@@ -489,8 +495,8 @@ footer .wrap { padding-block: 1.75rem 3rem; font-size: .85rem; color: var(--mute
 </footer>
 
 <script>
-  document.getElementById("copy").addEventListener("click", function () {
-    var el = document.getElementById("email");
+  document.querySelectorAll("[data-copy]").forEach(function (btn) { btn.addEventListener("click", function () {
+    var el = document.getElementById(btn.getAttribute("data-copy"));
     var out = document.getElementById("copied");
     function fallback() {
       var r = document.createRange();
@@ -501,7 +507,7 @@ footer .wrap { padding-block: 1.75rem 3rem; font-size: .85rem; color: var(--mute
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(el.textContent).then(function () { out.textContent = "Copied to clipboard."; }, fallback);
     } else { fallback(); }
-  });
+  }); });
 </script>
 </body>
 </html>
